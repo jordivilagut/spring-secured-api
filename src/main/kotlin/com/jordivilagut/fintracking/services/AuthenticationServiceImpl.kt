@@ -19,14 +19,14 @@ class AuthenticationServiceImpl
         val EMAIL_REGEX = Regex("^(.+)@(.+)$")
     }
 
-    override fun login(token: String?, credentials: UserCredentials): Auth {
+    override fun login(token: String?, credentials: UserCredentials?): Auth {
         return  if (!token.isNullOrBlank()) autoLogin(token)
-                else credentialsLogin(credentials)
+                else credentialsLogin(credentials!!)
     }
 
     override fun register(credentials: UserCredentials): Auth {
         val user = userService.createUser(credentials)
-        return login(null, UserCredentials(user.email, user.password))
+        return credentialsLogin(UserCredentials(user.email, user.password))
     }
 
     private fun autoLogin(token: String): Auth {
@@ -37,8 +37,7 @@ class AuthenticationServiceImpl
     }
 
     private fun credentialsLogin(credentials: UserCredentials): Auth {
-        if (credentials.email == null)                              throw InvalidUserException("Invalid email.")
-        val user = userService.findByEmail(credentials.email) ?:    throw InvalidUserException("Invalid email.")
+        val user = userService.findByEmail(credentials.email)?:     throw InvalidUserException("Invalid email.")
         if (user.password != credentials.password)                  throw InvalidUserException("Invalid password.")
 
         //TODO - Generate and store token for user
