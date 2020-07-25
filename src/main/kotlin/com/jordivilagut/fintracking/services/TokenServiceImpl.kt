@@ -8,10 +8,12 @@ import com.jordivilagut.fintracking.services.TokenService.Companion.SUBJECT
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import org.springframework.stereotype.Service
 import java.security.Key
 import java.util.*
 import javax.crypto.spec.SecretKeySpec
 
+@Service
 class TokenServiceImpl : TokenService {
 
     override fun createJWT(user: User): String {
