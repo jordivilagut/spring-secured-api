@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service
 @Service
 class UserServiceImpl
 
-
     constructor(
             @Autowired val userRepository: UserRepository)
 
@@ -30,17 +29,21 @@ class UserServiceImpl
         TODO("Not yet implemented")
     }
 
-
     override fun createUser(credentials: UserCredentials): User {
         val email = credentials.email
         val password = credentials.password
 
-        if (email.isNullOrBlank() || password.isNullOrBlank())      throw InvalidUserException("Empty username or password.")
+        if (email.isBlank() || password.isBlank())                  throw InvalidUserException("Empty username or password.")
         if (findByEmail(email) != null)                             throw AlreadyRegisteredException("Username already registered.")
         if (password.length < 4)                                    throw InvalidUserException("Password is too short.")
         if (!email.matches(AuthenticationServiceImpl.EMAIL_REGEX))  throw InvalidUserException("Invalid email.")
 
         userRepository.insert(toUser(email, password))
         return userRepository.findByEmail(email)!!
+    }
+
+    override fun updateToken(user: User, token: String) {
+        user.token = token
+        userRepository.save(user)
     }
 }

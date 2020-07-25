@@ -9,4 +9,4 @@ data class User(
         @Id val id: ObjectId?,
         val email: String,
         val password: String,
-        val token: String?)
+        var token: String?)

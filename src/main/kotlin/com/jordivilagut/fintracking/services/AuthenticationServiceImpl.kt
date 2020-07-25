@@ -1,6 +1,7 @@
 package com.jordivilagut.fintracking.services
 
 import com.jordivilagut.fintracking.exceptions.InvalidUserException
+import com.jordivilagut.fintracking.model.User
 import com.jordivilagut.fintracking.model.dto.Auth
 import com.jordivilagut.fintracking.model.dto.UserCredentials
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,7 +12,8 @@ class AuthenticationServiceImpl
 
     @Autowired
     constructor(
-            val userService: UserService)
+            val userService: UserService,
+            val tokenService: TokenService)
 
     : AuthenticationService {
 
@@ -31,16 +33,19 @@ class AuthenticationServiceImpl
 
     private fun autoLogin(token: String): Auth {
         val user = userService.findByToken(token) ?: throw InvalidUserException("User not found.")
-
-        //TODO - Generate and store token for user
-        return Auth(user.email, "test-token")
+        return updateToken(user)
     }
 
     private fun credentialsLogin(credentials: UserCredentials): Auth {
         val user = userService.findByEmail(credentials.email)?:     throw InvalidUserException("Invalid email.")
         if (user.password != credentials.password)                  throw InvalidUserException("Invalid password.")
+        return updateToken(user)
+    }
 
-        //TODO - Generate and store token for user
-        return Auth(user.email, "test-token")
+    private fun updateToken(user: User): Auth {
+        val token = tokenService.createJWT(user)
+        userService.updateToken(user, token)
+
+        return Auth(user.email, user.token!!)
     }
 }

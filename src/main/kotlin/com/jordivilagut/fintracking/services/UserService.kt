@@ -15,6 +15,8 @@ interface UserService {
 
     fun createUser(credentials: UserCredentials): User
 
+    fun updateToken(user: User, token: String)
+
     class Filter : BaseFilter() {
 
         var email: String? = null
