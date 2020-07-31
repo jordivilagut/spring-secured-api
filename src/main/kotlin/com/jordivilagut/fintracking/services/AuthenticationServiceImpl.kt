@@ -30,6 +30,11 @@ class AuthenticationServiceImpl
         return credentialsLogin(UserCredentials(user.email, user.password))
     }
 
+    override fun logout(token: String) {
+        val user = userService.findByToken(token) ?: throw InvalidUserException("User not found.")
+        userService.revokeToken(user)
+    }
+
     private fun autoLogin(token: String): Auth {
         val user = userService.findByToken(token) ?: throw InvalidUserException("User not found.")
         return Auth(user.email, user.token!!)

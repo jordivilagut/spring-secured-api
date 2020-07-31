@@ -8,4 +8,6 @@ interface AuthenticationService {
     fun login(token: String?, credentials: UserCredentials?): Auth
 
     fun register(credentials: UserCredentials): Auth
+
+    fun logout(token: String)
 }

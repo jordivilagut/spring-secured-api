@@ -42,8 +42,12 @@ class UserServiceImpl
         return userRepository.findByEmail(email)!!
     }
 
-    override fun updateToken(user: User, token: String) {
+    override fun updateToken(user: User, token: String?) {
         user.token = token
         userRepository.save(user)
+    }
+
+    override fun revokeToken(user: User) {
+        updateToken(user, null)
     }
 }

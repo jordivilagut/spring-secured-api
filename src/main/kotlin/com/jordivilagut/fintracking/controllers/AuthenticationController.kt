@@ -8,4 +8,6 @@ interface AuthenticationController {
     fun login(token: String?, credentials: UserCredentials?): Auth
 
     fun signup(credentials: UserCredentials): Auth
+
+    fun logout(token: String)
 }

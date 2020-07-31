@@ -15,7 +15,9 @@ interface UserService {
 
     fun createUser(credentials: UserCredentials): User
 
-    fun updateToken(user: User, token: String)
+    fun updateToken(user: User, token: String?)
+
+    fun revokeToken(user: User)
 
     class Filter : BaseFilter() {
 

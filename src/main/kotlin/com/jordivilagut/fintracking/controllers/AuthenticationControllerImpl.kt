@@ -35,4 +35,11 @@ class AuthenticationControllerImpl
 
         return authService.register(credentials)
     }
+
+    @DeleteMapping
+    override fun logout(
+            @RequestHeader(AUTH_TOKEN) token: String) {
+
+        authService.logout(token)
+    }
 }
