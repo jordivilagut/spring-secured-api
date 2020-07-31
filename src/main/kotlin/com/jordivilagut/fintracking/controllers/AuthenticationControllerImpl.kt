@@ -19,8 +19,8 @@ class AuthenticationControllerImpl
 
     @PostMapping("/login")
     override fun login(
-            @RequestHeader(AUTH_TOKEN) token: String,
-            @RequestBody credentials: UserCredentials)
+            @RequestHeader(AUTH_TOKEN) token: String?,
+            @RequestBody credentials: UserCredentials?)
 
     : Auth {
 
