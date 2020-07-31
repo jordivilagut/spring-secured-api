@@ -38,8 +38,8 @@ class UserServiceImpl
         if (password.length < 4)                                    throw InvalidUserException("Password is too short.")
         if (!email.matches(AuthenticationServiceImpl.EMAIL_REGEX))  throw InvalidUserException("Invalid email.")
 
-        userRepository.insert(toUser(email, password))
-        return userRepository.findByEmail(email)!!
+        val user = toUser(email, password)
+        return userRepository.save(user)
     }
 
     override fun updateToken(user: User, token: String?) {
