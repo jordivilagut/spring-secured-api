@@ -1,7 +1,9 @@
 package com.jordivilagut.fintracking.controllers
 
+import com.jordivilagut.fintracking.model.User
+
 
 interface SecuredController {
 
-    fun sayHi(): String
+    fun sayHi(user: User): String
 }
