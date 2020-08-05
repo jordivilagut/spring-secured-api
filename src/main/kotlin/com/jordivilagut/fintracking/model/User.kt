@@ -15,15 +15,15 @@ data class User(
 
 ): UserDetails {
 
+    override fun getUsername() = email
+
+    override fun getPassword() = password
+
     override fun getAuthorities() = HashSet<GrantedAuthority>()
 
     override fun isEnabled() = true
 
-    override fun getUsername() = email
-
     override fun isCredentialsNonExpired() = true
-
-    override fun getPassword() = password
 
     override fun isAccountNonExpired() = true
 
