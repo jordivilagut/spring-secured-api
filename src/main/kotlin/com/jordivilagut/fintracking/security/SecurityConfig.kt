@@ -11,6 +11,9 @@ import org.springframework.security.web.authentication.AnonymousAuthenticationFi
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 
 @Configuration
@@ -25,11 +28,13 @@ class SecurityConfig
 
     companion object {
         private const val LOGIN_URL = "/auth/login"
+        private const val LOCAL_URI = "http://localhost:3000"
     }
 
     override fun configure(http: HttpSecurity) {
         http
-                .authenticationProvider(authProvider)
+                .cors().configurationSource(corsConfigurationSource())
+                .and().authenticationProvider(authProvider)
                 .addFilterBefore(userAuthFilter(), AnonymousAuthenticationFilter::class.java)
                 .authorizeRequests()
                     .antMatchers(LOGIN_URL).permitAll()
@@ -51,5 +56,14 @@ class SecurityConfig
         val successHandler = SimpleUrlAuthenticationSuccessHandler()
         successHandler.setRedirectStrategy(NoRedirect())
         return successHandler
+    }
+
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource? {
+        val source = UrlBasedCorsConfigurationSource()
+        val corsConfiguration = CorsConfiguration().applyPermitDefaultValues()
+        corsConfiguration.allowedOrigins = arrayListOf(LOCAL_URI)
+        source.registerCorsConfiguration("/**", corsConfiguration)
+        return source
     }
 }
