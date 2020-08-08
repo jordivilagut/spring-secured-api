@@ -1,7 +1,5 @@
 package com.jordivilagut.fintracking.exceptions
 
-import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.http.HttpStatus.BAD_REQUEST
 
-@ResponseStatus(HttpStatus.BAD_REQUEST)
-class AlreadyRegisteredException(message: String): RuntimeException(message)
+class AlreadyRegisteredException(message: String): ApiException(message, BAD_REQUEST)

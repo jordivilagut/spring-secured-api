@@ -1,7 +1,5 @@
 package com.jordivilagut.fintracking.exceptions
 
-import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.http.HttpStatus.UNAUTHORIZED
 
-@ResponseStatus(HttpStatus.UNAUTHORIZED)
-class InvalidUserException(message: String): RuntimeException(message)
+class InvalidUserException(message: String): ApiException(message, UNAUTHORIZED)
