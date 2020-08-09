@@ -2,6 +2,7 @@ package com.jordivilagut.fintracking.security
 
 import com.jordivilagut.fintracking.services.TokenService
 import com.jordivilagut.fintracking.services.UserService
+import com.jordivilagut.fintracking.utils.Headers.Companion.AUTH_TOKEN
 import io.jsonwebtoken.ExpiredJwtException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -18,8 +19,7 @@ class UserAuthFilter
 
     constructor(
         @Autowired val tokenService: TokenService,
-        @Autowired val userService: UserService,
-        @Autowired val authEntryPoint: AuthEntryPoint)
+        @Autowired val userService: UserService)
 
     : OncePerRequestFilter() {
 
@@ -28,7 +28,7 @@ class UserAuthFilter
                                   chain: FilterChain) {
 
 
-        val token = request.getHeader("Authorization");
+        val token = request.getHeader(AUTH_TOKEN);
         var username: String? = null
 
         if (token != null) {
