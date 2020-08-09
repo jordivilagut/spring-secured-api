@@ -15,4 +15,8 @@ interface TokenService {
     fun createJWT(user: User): String
 
     fun decodeJWT(jwt: String): Claims
+
+    fun getUsername(jwt: String): String
+
+    fun isExpired(jwt: String): Boolean
 }

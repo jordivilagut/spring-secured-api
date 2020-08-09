@@ -37,4 +37,12 @@ class TokenServiceImpl : TokenService {
                 .setSigningKey(SECRET_KEY.toByteArray())
                 .parseClaimsJws(jwt).body
     }
+
+    override fun getUsername(jwt: String): String {
+        return decodeJWT(jwt).id
+    }
+
+    override fun isExpired(jwt: String): Boolean {
+        return Date().after(decodeJWT(jwt).expiration)
+    }
 }
